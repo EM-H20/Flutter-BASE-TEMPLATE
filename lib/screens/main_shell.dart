@@ -15,7 +15,22 @@ class MainShell extends StatefulWidget {
 }
 
 class _MainShellState extends State<MainShell> {
-  final _childKey = GlobalKey();
+  final _scrollControllers = <String, ScrollController>{};
+
+  @override
+  void dispose() {
+    for (final controller in _scrollControllers.values) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
+  ScrollController _getScrollController(String route) {
+    return _scrollControllers.putIfAbsent(
+      route,
+      () => ScrollController(),
+    );
+  }
 
   /// 현재 선택된 탭 인덱스 계산
   int _calculateSelectedIndex() {
@@ -48,73 +63,61 @@ class _MainShellState extends State<MainShell> {
     }
   }
 
-  /// 현재 화면의 PrimaryScrollController를 최상위로 스크롤
+  /// 현재 화면의 ScrollController를 최상위로 스크롤
   void _scrollToTop() {
-    final childContext = _childKey.currentContext;
-    if (childContext == null) {
-      debugPrint('ScrollToTop failed: childContext is null');
-      return;
-    }
+    final route = widget.state.uri.path;
+    final controller = _scrollControllers[route];
 
-    try {
-      // Scaffold 찾기
-      final scaffold = Scaffold.maybeOf(childContext);
-      if (scaffold == null) {
-        debugPrint('ScrollToTop failed: No Scaffold found');
-        return;
-      }
-
-      // PrimaryScrollController 찾기
-      final scrollController = PrimaryScrollController.maybeOf(childContext);
-      if (scrollController != null && scrollController.hasClients) {
-        debugPrint('ScrollToTop: Scrolling to top');
-        scrollController.animateTo(
-          0,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeOut,
-        );
-      } else {
-        debugPrint('ScrollToTop failed: No scroll controller or clients');
-      }
-    } catch (e) {
-      debugPrint('ScrollToTop error: $e');
+    if (controller != null && controller.hasClients) {
+      controller.animateTo(
+        0,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final selectedIndex = _calculateSelectedIndex();
+    final route = widget.state.uri.path;
+    final scrollController = _getScrollController(route);
 
     return Scaffold(
-      body: KeyedSubtree(key: _childKey, child: widget.child),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: selectedIndex,
-        onTap: (index) => _onItemTapped(context, index),
-        type: BottomNavigationBarType.fixed,
-        elevation: 0,
-        selectedFontSize: 12,
-        unselectedFontSize: 12,
-        items: const [
-          // 탭 1: Home
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          // 탭 2: Profile
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            activeIcon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-          // 확장: 새 탭 추가 시 BottomNavigationBarItem 추가
-          // 예시:
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.settings_outlined),
-          //   activeIcon: Icon(Icons.settings),
-          //   label: 'Settings',
-          // ),
-        ],
+      body: PrimaryScrollController(
+        controller: scrollController,
+        child: widget.child,
+      ),
+      bottomNavigationBar: SafeArea(
+        child: BottomNavigationBar(
+          currentIndex: selectedIndex,
+          onTap: (index) => _onItemTapped(context, index),
+          type: BottomNavigationBarType.fixed,
+          elevation: 0,
+          selectedFontSize: 12,
+          unselectedFontSize: 12,
+          items: const [
+            // 탭 1: Home
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_outlined),
+              activeIcon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            // 탭 2: Profile
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_outline),
+              activeIcon: Icon(Icons.person),
+              label: 'Profile',
+            ),
+            // 확장: 새 탭 추가 시 BottomNavigationBarItem 추가
+            // 예시:
+            // BottomNavigationBarItem(
+            //   icon: Icon(Icons.settings_outlined),
+            //   activeIcon: Icon(Icons.settings),
+            //   label: 'Settings',
+            // ),
+          ],
+        ),
       ),
     );
   }

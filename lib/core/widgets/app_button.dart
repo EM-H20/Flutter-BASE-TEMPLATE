@@ -63,6 +63,7 @@ class AppButton extends StatelessWidget {
           onPressed: isEnabled ? onPressed : null,
           style: OutlinedButton.styleFrom(
             foregroundColor: colorScheme.primary,
+            backgroundColor: Colors.transparent,
             disabledForegroundColor: colorScheme.onSurface.withValues(
               alpha: 0.38,
             ),
@@ -81,6 +82,7 @@ class AppButton extends StatelessWidget {
           onPressed: isEnabled ? onPressed : null,
           style: TextButton.styleFrom(
             foregroundColor: colorScheme.primary,
+            backgroundColor: Colors.transparent,
             disabledForegroundColor: colorScheme.onSurface.withValues(
               alpha: 0.38,
             ),

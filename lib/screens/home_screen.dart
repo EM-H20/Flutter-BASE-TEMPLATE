@@ -24,7 +24,6 @@ class HomeScreen extends ConsumerWidget {
         ],
       ),
       body: ListView(
-        primary: true, // PrimaryScrollController 사용 활성화
         padding: const EdgeInsets.all(16),
         children: [
           _buildSection(

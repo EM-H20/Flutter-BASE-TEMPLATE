@@ -17,19 +17,6 @@ class MainShell extends StatelessWidget {
   }
 
   void _onItemTapped(BuildContext context, int index) {
-    final selectedIndex = _calculateSelectedIndex();
-
-    if (selectedIndex == index) {
-      // 현재 탭 재클릭 → 최상위로 스크롤
-      Scrollable.maybeOf(context)?.position.animateTo(
-        0,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeOut,
-      );
-      return;
-    }
-
-    // 다른 탭으로 이동
     switch (index) {
       case 0:
         context.go(RouteNames.home);

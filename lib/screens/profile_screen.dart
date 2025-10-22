@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../core/widgets/app_card.dart';
+import '../core/theme/app_spacing.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -10,38 +12,64 @@ class ProfileScreen extends StatelessWidget {
         title: const Text('Profile'),
       ),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: AppSpacing.all(AppSpacing.screenPadding),
         children: [
           const CircleAvatar(
             radius: 50,
             child: Icon(Icons.person, size: 50),
           ),
-          const SizedBox(height: 16),
+          AppSpacing.verticalMD(),
           Text(
             'User Name',
             style: Theme.of(context).textTheme.headlineMedium,
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 8),
+          AppSpacing.verticalSM(),
           Text(
             'user@example.com',
             style: Theme.of(context).textTheme.bodyMedium,
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 32),
-          _buildProfileItem(context, Icons.settings, 'Settings'),
-          _buildProfileItem(context, Icons.notifications, 'Notifications'),
-          _buildProfileItem(context, Icons.privacy_tip, 'Privacy'),
-          _buildProfileItem(context, Icons.help, 'Help & Support'),
-          _buildProfileItem(context, Icons.info, 'About'),
-          const SizedBox(height: 32),
+          AppSpacing.verticalXL(),
+          AppListCard(
+            leading: const Icon(Icons.settings),
+            title: 'Settings',
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () {},
+          ),
+          AppListCard(
+            leading: const Icon(Icons.notifications),
+            title: 'Notifications',
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () {},
+          ),
+          AppListCard(
+            leading: const Icon(Icons.privacy_tip),
+            title: 'Privacy',
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () {},
+          ),
+          AppListCard(
+            leading: const Icon(Icons.help),
+            title: 'Help & Support',
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () {},
+          ),
+          AppListCard(
+            leading: const Icon(Icons.info),
+            title: 'About',
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () {},
+          ),
+          AppSpacing.verticalXL(),
           // 스크롤 테스트를 위한 추가 아이템들
           ...List.generate(
             20,
-            (index) => _buildProfileItem(
-              context,
-              Icons.list,
-              'Item ${index + 1}',
+            (index) => AppListCard(
+              leading: const Icon(Icons.list),
+              title: 'Item ${index + 1}',
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () {},
             ),
           ),
         ],
@@ -49,15 +77,4 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildProfileItem(BuildContext context, IconData icon, String title) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 8),
-      child: ListTile(
-        leading: Icon(icon),
-        title: Text(title),
-        trailing: const Icon(Icons.chevron_right),
-        onTap: () {},
-      ),
-    );
-  }
 }

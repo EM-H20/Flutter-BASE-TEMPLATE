@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/theme/theme_notifier.dart';
+import '../core/widgets/app_button.dart';
+import '../core/widgets/app_card.dart';
+import '../core/widgets/app_text_field.dart';
+import '../core/theme/app_spacing.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -24,7 +28,7 @@ class HomeScreen extends ConsumerWidget {
         ],
       ),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: AppSpacing.all(AppSpacing.screenPadding),
         children: [
           _buildSection(
             context,
@@ -32,31 +36,31 @@ class HomeScreen extends ConsumerWidget {
             'Tailwind/shadcn 스타일의 Flutter 디자인 토큰 시스템',
           ),
 
-          const SizedBox(height: 32),
+          AppSpacing.verticalXL(),
 
           /// Typography Section
           _buildSectionTitle(context, 'Typography'),
           _buildTypographyShowcase(context),
 
-          const SizedBox(height: 32),
+          AppSpacing.verticalXL(),
 
           /// Colors Section
           _buildSectionTitle(context, 'Colors'),
           _buildColorsShowcase(context),
 
-          const SizedBox(height: 32),
+          AppSpacing.verticalXL(),
 
           /// Buttons Section
           _buildSectionTitle(context, 'Buttons'),
           _buildButtonsShowcase(context),
 
-          const SizedBox(height: 32),
+          AppSpacing.verticalXL(),
 
           /// Cards Section
           _buildSectionTitle(context, 'Cards & Spacing'),
           _buildCardsShowcase(context),
 
-          const SizedBox(height: 32),
+          AppSpacing.verticalXL(),
 
           /// Input Fields Section
           _buildSectionTitle(context, 'Input Fields'),
@@ -71,7 +75,7 @@ class HomeScreen extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(title, style: Theme.of(context).textTheme.headlineLarge),
-        const SizedBox(height: 8),
+        AppSpacing.verticalSM(),
         Text(description, style: Theme.of(context).textTheme.bodyMedium),
       ],
     );
@@ -79,7 +83,7 @@ class HomeScreen extends ConsumerWidget {
 
   Widget _buildSectionTitle(BuildContext context, String title) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
+      padding: EdgeInsets.only(bottom: AppSpacing.md),
       child: Text(title, style: Theme.of(context).textTheme.headlineMedium),
     );
   }
@@ -89,24 +93,24 @@ class HomeScreen extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text('Display Large', style: Theme.of(context).textTheme.displayLarge),
-        const SizedBox(height: 8),
+        AppSpacing.verticalSM(),
         Text(
           'Headline Large',
           style: Theme.of(context).textTheme.headlineLarge,
         ),
-        const SizedBox(height: 8),
+        AppSpacing.verticalSM(),
         Text('Title Large', style: Theme.of(context).textTheme.titleLarge),
-        const SizedBox(height: 8),
+        AppSpacing.verticalSM(),
         Text(
           'Body Large - 본문 텍스트입니다',
           style: Theme.of(context).textTheme.bodyLarge,
         ),
-        const SizedBox(height: 8),
+        AppSpacing.verticalSM(),
         Text(
           'Body Medium - 기본 텍스트',
           style: Theme.of(context).textTheme.bodyMedium,
         ),
-        const SizedBox(height: 8),
+        AppSpacing.verticalSM(),
         Text(
           'Body Small - 보조 텍스트',
           style: Theme.of(context).textTheme.bodySmall,
@@ -142,11 +146,23 @@ class HomeScreen extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ElevatedButton(onPressed: () {}, child: const Text('Elevated Button')),
-        const SizedBox(height: 8),
-        OutlinedButton(onPressed: () {}, child: const Text('Outlined Button')),
-        const SizedBox(height: 8),
-        TextButton(onPressed: () {}, child: const Text('Text Button')),
+        AppButton(
+          onPressed: () {},
+          text: 'Primary Button',
+          type: AppButtonType.primary,
+        ),
+        AppSpacing.verticalSM(),
+        AppButton(
+          onPressed: () {},
+          text: 'Secondary Button',
+          type: AppButtonType.secondary,
+        ),
+        AppSpacing.verticalSM(),
+        AppButton(
+          onPressed: () {},
+          text: 'Text Button',
+          type: AppButtonType.text,
+        ),
       ],
     );
   }
@@ -154,40 +170,34 @@ class HomeScreen extends ConsumerWidget {
   Widget _buildCardsShowcase(BuildContext context) {
     return Column(
       children: [
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Card Title',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  '카드 컴포넌트입니다. 기본 간격과 스타일이 적용되어 있습니다.',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ],
-            ),
+        AppCard(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Card Title',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              AppSpacing.verticalSM(),
+              Text(
+                '카드 컴포넌트입니다. 기본 간격과 스타일이 적용되어 있습니다.',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ],
           ),
         ),
-        const SizedBox(height: 16),
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('간격 시스템', style: Theme.of(context).textTheme.titleMedium),
-                const SizedBox(height: 8),
-                Text(
-                  'xs: 4px | sm: 8px | md: 16px | lg: 24px | xl: 32px',
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-              ],
-            ),
+        AppSpacing.verticalMD(),
+        AppCard(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('간격 시스템', style: Theme.of(context).textTheme.titleMedium),
+              AppSpacing.verticalSM(),
+              Text(
+                'xs: 4px | sm: 8px | md: 16px | lg: 24px | xl: 32px',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ],
           ),
         ),
       ],
@@ -197,19 +207,15 @@ class HomeScreen extends ConsumerWidget {
   Widget _buildInputShowcase(BuildContext context) {
     return Column(
       children: [
-        const TextField(
-          decoration: InputDecoration(
-            labelText: 'Email',
-            hintText: 'your@email.com',
-          ),
+        const AppTextField(
+          label: 'Email',
+          hint: 'your@email.com',
+          keyboardType: TextInputType.emailAddress,
         ),
-        const SizedBox(height: 16),
-        const TextField(
-          decoration: InputDecoration(
-            labelText: 'Password',
-            hintText: '비밀번호 입력',
-            suffixIcon: Icon(Icons.visibility_off),
-          ),
+        AppSpacing.verticalMD(),
+        const AppTextField(
+          label: 'Password',
+          hint: '비밀번호 입력',
           obscureText: true,
         ),
       ],

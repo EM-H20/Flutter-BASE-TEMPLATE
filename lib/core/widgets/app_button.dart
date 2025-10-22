@@ -48,11 +48,11 @@ class AppButton extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             backgroundColor: colorScheme.primary,
             foregroundColor: colorScheme.onPrimary,
-            disabledBackgroundColor: colorScheme.onSurface.withValues(alpha: 0.12),
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: _getBorderRadius(),
+            disabledBackgroundColor: colorScheme.onSurface.withValues(
+              alpha: 0.12,
             ),
+            elevation: 0,
+            shape: RoundedRectangleBorder(borderRadius: _getBorderRadius()),
             padding: _getPadding(),
           ),
           child: _buildContent(context),
@@ -63,14 +63,14 @@ class AppButton extends StatelessWidget {
           onPressed: isEnabled ? onPressed : null,
           style: OutlinedButton.styleFrom(
             foregroundColor: colorScheme.primary,
-            disabledForegroundColor: colorScheme.onSurface.withValues(alpha: 0.38),
+            disabledForegroundColor: colorScheme.onSurface.withValues(
+              alpha: 0.38,
+            ),
             side: BorderSide(
               color: isEnabled ? colorScheme.primary : colorScheme.outline,
               width: 1,
             ),
-            shape: RoundedRectangleBorder(
-              borderRadius: _getBorderRadius(),
-            ),
+            shape: RoundedRectangleBorder(borderRadius: _getBorderRadius()),
             padding: _getPadding(),
           ),
           child: _buildContent(context),
@@ -81,7 +81,9 @@ class AppButton extends StatelessWidget {
           onPressed: isEnabled ? onPressed : null,
           style: TextButton.styleFrom(
             foregroundColor: colorScheme.primary,
-            disabledForegroundColor: colorScheme.onSurface.withValues(alpha: 0.38),
+            disabledForegroundColor: colorScheme.onSurface.withValues(
+              alpha: 0.38,
+            ),
             padding: _getPadding(),
           ),
           child: _buildContent(context),
@@ -93,11 +95,11 @@ class AppButton extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             backgroundColor: colorScheme.error,
             foregroundColor: colorScheme.onError,
-            disabledBackgroundColor: colorScheme.onSurface.withValues(alpha: 0.12),
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: _getBorderRadius(),
+            disabledBackgroundColor: colorScheme.onSurface.withValues(
+              alpha: 0.12,
             ),
+            elevation: 0,
+            shape: RoundedRectangleBorder(borderRadius: _getBorderRadius()),
             padding: _getPadding(),
           ),
           child: _buildContent(context),
@@ -167,14 +169,15 @@ class AppButton extends StatelessWidget {
   }
 
   /// 텍스트 스타일 (디자인 토큰 사용)
+  /// 색상은 버튼의 foregroundColor를 따르도록 color를 제거
   TextStyle _getTextStyle(BuildContext context) {
     switch (size) {
       case AppButtonSize.small:
-        return AppTextStyle.labelSmall;
+        return AppTextStyle.labelSmall.copyWith(color: null);
       case AppButtonSize.medium:
-        return AppTextStyle.labelMedium;
+        return AppTextStyle.labelMedium.copyWith(color: null);
       case AppButtonSize.large:
-        return AppTextStyle.labelLarge;
+        return AppTextStyle.labelLarge.copyWith(color: null);
     }
   }
 
@@ -204,16 +207,7 @@ class AppButton extends StatelessWidget {
 }
 
 /// 버튼 타입
-enum AppButtonType {
-  primary,
-  secondary,
-  text,
-  danger,
-}
+enum AppButtonType { primary, secondary, text, danger }
 
 /// 버튼 크기
-enum AppButtonSize {
-  small,
-  medium,
-  large,
-}
+enum AppButtonSize { small, medium, large }

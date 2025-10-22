@@ -493,15 +493,34 @@ if (email.isValidEmail) {
 
 ## Routing System
 
-이 프로젝트는 `go_router`를 사용한 선언적 라우팅 시스템을 제공합니다.
+이 프로젝트는 `go_router`를 사용한 **바텀 네비게이션 기반** 라우팅 시스템을 제공합니다.
+
+### App Structure
+
+```
+앱 시작
+  ↓
+Splash (/) - 2초 대기
+  ↓ context.go() - 스택 쌓지 않음
+MainShell - ShellRoute (바텀 네비게이션)
+  ├─ Home (/home)
+  └─ Profile (/profile)
+```
+
+### Bottom Navigation Features
+
+- **ShellRoute 구조**: 바텀 네비게이션이 모든 탭에서 유지됨
+- **애니메이션 없음**: 탭 전환 시 부드러운 즉시 전환 (`NoTransitionPage`)
+- **탭 재탭 스크롤**: 현재 선택된 탭을 다시 탭하면 최상위로 스크롤
+- **확장 가능**: 새 탭 추가 시 3곳만 수정
 
 ### Basic Usage
 
 **Navigation**:
 ```dart
-// Named route로 이동
+// Named route로 이동 (바텀 네비게이션 포함)
 context.go(RouteNames.home);
-context.push(RouteNames.profile);
+context.go(RouteNames.profile);
 
 // 뒤로가기
 context.pop();
@@ -512,86 +531,140 @@ context.pop();
 RouteNames.splash   // '/'
 RouteNames.home     // '/home'
 RouteNames.profile  // '/profile'
-
-// 필요 시 추가 라우트를 여기에 정의하세요
 ```
 
 ### Router Configuration
 
-라우터는 Riverpod을 통해 관리됩니다 ([app_router.dart](lib/core/router/app_router.dart)):
-
+**ShellRoute 구조** ([app_router.dart](lib/core/router/app_router.dart)):
 ```dart
-final router = ref.watch(appRouterProvider);
-
-MaterialApp.router(
-  routerConfig: router,
-  // ...
+ShellRoute(
+  builder: (context, state, child) => MainShell(
+    state: state,
+    child: child,
+  ),
+  routes: [
+    GoRoute(
+      path: RouteNames.home,
+      pageBuilder: (context, state) => NoTransitionPage(
+        child: const HomeScreen(),
+      ),
+    ),
+    // ... 다른 탭들
+  ],
 )
 ```
 
-### Adding New Routes
+### Adding New Bottom Navigation Tab
 
-1. **화면 파일 생성** (`lib/screens/new_screen.dart`):
+새 탭을 바텀 네비게이션에 추가하려면 **3곳만** 수정하면 됩니다:
+
+#### 1. 화면 파일 생성 (`lib/screens/settings_screen.dart`):
 ```dart
 import 'package:flutter/material.dart';
 
-class NewScreen extends StatelessWidget {
-  const NewScreen({super.key});
+class SettingsScreen extends StatelessWidget {
+  const SettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(child: Text('New Screen')),
+      appBar: AppBar(title: Text('Settings')),
+      body: Center(child: Text('Settings Screen')),
     );
   }
 }
 ```
 
-2. **라우트 이름 추가** ([route_names.dart](lib/core/router/route_names.dart)):
+#### 2. MainShell 수정 ([main_shell.dart](lib/screens/main_shell.dart)):
 ```dart
-static const String newRoute = '/new-route';
+// ✅ Step 2-1: _calculateSelectedIndex() 메서드에 조건 추가
+int _calculateSelectedIndex() {
+  final location = widget.state.uri.path;
+  if (location.startsWith(RouteNames.home)) return 0;
+  if (location.startsWith(RouteNames.profile)) return 1;
+  if (location.startsWith(RouteNames.settings)) return 2;  // 추가
+  return 0;
+}
+
+// ✅ Step 2-2: _onItemTapped() 메서드에 case 추가
+void _onItemTapped(BuildContext context, int index) {
+  // ... existing code ...
+  case 2:
+    context.go(RouteNames.settings);  // 추가
+    break;
+}
+
+// ✅ Step 2-3: destinations에 NavigationDestination 추가
+destinations: const [
+  NavigationDestination(icon: Icon(Icons.home_outlined), ...),
+  NavigationDestination(icon: Icon(Icons.person_outline), ...),
+  NavigationDestination(  // 추가
+    icon: Icon(Icons.settings_outlined),
+    selectedIcon: Icon(Icons.settings),
+    label: 'Settings',
+  ),
+],
 ```
 
-3. **라우트 정의** ([app_router.dart](lib/core/router/app_router.dart)):
+#### 3. Router 수정 ([app_router.dart](lib/core/router/app_router.dart) + [route_names.dart](lib/core/router/route_names.dart)):
 ```dart
-import '../../screens/new_screen.dart';  // import 추가
+// ✅ route_names.dart에 추가
+static const String settings = '/settings';
 
-// routes 배열에 추가:
-GoRoute(
-  path: RouteNames.newRoute,
-  name: 'newRoute',
-  builder: (context, state) => const NewScreen(),
-),
+// ✅ app_router.dart - import 추가
+import '../../screens/settings_screen.dart';
+
+// ✅ app_router.dart - ShellRoute의 routes 배열에 추가
+ShellRoute(
+  builder: (context, state, child) => MainShell(...),
+  routes: [
+    GoRoute(...),  // home
+    GoRoute(...),  // profile
+    GoRoute(  // 추가
+      path: RouteNames.settings,
+      name: 'settings',
+      pageBuilder: (context, state) => NoTransitionPage(
+        child: const SettingsScreen(),
+      ),
+    ),
+  ],
+)
 ```
 
-4. **코드 생성 실행**:
+#### 4. 코드 생성:
 ```bash
 dart run build_runner build --delete-conflicting-outputs
 ```
 
-### Nested Routes
+### Adding Non-Tab Routes
 
-중첩 라우트 예시:
+바텀 네비게이션 **밖**의 라우트 추가 (예: 상세 페이지):
+
 ```dart
+// ShellRoute 밖에 GoRoute 추가 (바텀 네비게이션 없음)
 GoRoute(
-  path: RouteNames.profile,
-  name: 'profile',
-  builder: (context, state) => const ProfileScreen(),
-  routes: [
-    GoRoute(
-      path: 'edit',  // '/profile/edit'
-      name: 'editProfile',
-      builder: (context, state) => const EditProfileScreen(),
-    ),
-  ],
+  path: '/detail/:id',
+  name: 'detail',
+  builder: (context, state) {
+    final id = state.pathParameters['id']!;
+    return DetailScreen(id: id);
+  },
 ),
 ```
 
-### Error Handling
+### Tap to Scroll to Top
 
-라우터에 에러 핸들링이 내장되어 있습니다:
-- 존재하지 않는 라우트 접근 시 에러 화면 표시
-- '홈으로 이동' 버튼으로 복구 가능
+**이미 선택된 탭을 한 번 더 탭**하면 자동으로 최상위로 스크롤됩니다:
+
+```dart
+// MainShell에 이미 구현되어 있음
+// 현재 탭 재탭 → 최상위로 부드럽게 스크롤 (300ms)
+// ListView, GridView 등 PrimaryScrollController를 사용하는 위젯에서 자동 작동
+```
+
+**동작 예시**:
+- Home 탭 선택 상태에서 → Home 탭 다시 탭 → 최상위로 스크롤
+- Profile 탭 선택 상태에서 → Profile 탭 다시 탭 → 최상위로 스크롤
 
 ### Best Practices
 
@@ -604,16 +677,26 @@ context.go(RouteNames.home);
 context.go('/home');
 ```
 
-2. **Named Routes**: 라우트에 이름 지정으로 타입 안정성 확보
+2. **NoTransitionPage**: 탭 전환 시 애니메이션 제거
 ```dart
-GoRoute(
-  path: RouteNames.profile,
-  name: 'profile',  // 이름 지정
-  builder: (context, state) => const ProfileScreen(),
-)
+pageBuilder: (context, state) => NoTransitionPage(
+  child: const HomeScreen(),
+),
 ```
 
-3. **Code Generation**: 라우트 변경 후 항상 build_runner 실행
+3. **ShellRoute for Bottom Nav**: 바텀 네비게이션은 ShellRoute 사용
+```dart
+// ✅ Good: 바텀 네비게이션 유지
+ShellRoute(
+  builder: (context, state, child) => MainShell(...),
+  routes: [/* 탭 라우트들 */],
+)
+
+// ❌ Bad: 개별 GoRoute (바텀 네비게이션 사라짐)
+GoRoute(path: '/home', builder: ...)
+```
+
+4. **Code Generation**: 라우트 변경 후 항상 build_runner 실행
 ```bash
 dart run build_runner build --delete-conflicting-outputs
 ```

@@ -6,7 +6,7 @@ part of 'app_router.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$appRouterHash() => r'7dd39d16e74bf62911ee2241e00a16f3487535e1';
+String _$appRouterHash() => r'8106bee1a2cec2786c6da6674d3a4cbda111d268';
 
 /// go_router Provider
 /// Riverpod을 통해 라우터 인스턴스를 관리

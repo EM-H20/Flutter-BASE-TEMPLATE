@@ -5,6 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../screens/splash_screen.dart';
 import '../../screens/home_screen.dart';
 import '../../screens/profile_screen.dart';
+import '../../screens/main_shell.dart';
 import 'route_names.dart';
 
 part 'app_router.g.dart';
@@ -18,7 +19,7 @@ GoRouter appRouter(Ref ref) {
     debugLogDiagnostics: true,
     routes: [
       // ============================================
-      // Splash 화면
+      // Splash 화면 (바텀 네비게이션 없음)
       // ============================================
       GoRoute(
         path: RouteNames.splash,
@@ -27,21 +28,42 @@ GoRouter appRouter(Ref ref) {
       ),
 
       // ============================================
-      // Home 화면
+      // Main Shell (바텀 네비게이션 포함)
       // ============================================
-      GoRoute(
-        path: RouteNames.home,
-        name: 'home',
-        builder: (context, state) => const HomeScreen(),
-      ),
+      ShellRoute(
+        builder: (context, state, child) => MainShell(
+          state: state,
+          child: child,
+        ),
+        routes: [
+          // Home 화면
+          GoRoute(
+            path: RouteNames.home,
+            name: 'home',
+            pageBuilder: (context, state) => NoTransitionPage(
+              child: const HomeScreen(),
+            ),
+          ),
 
-      // ============================================
-      // 프로필 화면
-      // ============================================
-      GoRoute(
-        path: RouteNames.profile,
-        name: 'profile',
-        builder: (context, state) => const ProfileScreen(),
+          // Profile 화면
+          GoRoute(
+            path: RouteNames.profile,
+            name: 'profile',
+            pageBuilder: (context, state) => NoTransitionPage(
+              child: const ProfileScreen(),
+            ),
+          ),
+
+          // 확장: 새 탭 추가 시 여기에 GoRoute 추가
+          // 예시:
+          // GoRoute(
+          //   path: RouteNames.settings,
+          //   name: 'settings',
+          //   pageBuilder: (context, state) => NoTransitionPage(
+          //     child: const SettingsScreen(),
+          //   ),
+          // ),
+        ],
       ),
     ],
 

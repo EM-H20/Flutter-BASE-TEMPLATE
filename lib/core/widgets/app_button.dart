@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_radius.dart';
 import '../theme/app_text_style.dart';
@@ -40,14 +39,16 @@ class AppButton extends StatelessWidget {
   }
 
   Widget _buildButton(BuildContext context, bool isEnabled) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     switch (type) {
       case AppButtonType.primary:
         return ElevatedButton(
           onPressed: isEnabled ? onPressed : null,
           style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.primary,
-            foregroundColor: AppColors.onPrimary,
-            disabledBackgroundColor: AppColors.textDisabled,
+            backgroundColor: colorScheme.primary,
+            foregroundColor: colorScheme.onPrimary,
+            disabledBackgroundColor: colorScheme.onSurface.withValues(alpha: 0.12),
             elevation: 0,
             shape: RoundedRectangleBorder(
               borderRadius: _getBorderRadius(),
@@ -61,10 +62,10 @@ class AppButton extends StatelessWidget {
         return OutlinedButton(
           onPressed: isEnabled ? onPressed : null,
           style: OutlinedButton.styleFrom(
-            foregroundColor: AppColors.primary,
-            disabledForegroundColor: AppColors.textDisabled,
+            foregroundColor: colorScheme.primary,
+            disabledForegroundColor: colorScheme.onSurface.withValues(alpha: 0.38),
             side: BorderSide(
-              color: isEnabled ? AppColors.primary : AppColors.border,
+              color: isEnabled ? colorScheme.primary : colorScheme.outline,
               width: 1,
             ),
             shape: RoundedRectangleBorder(
@@ -79,8 +80,8 @@ class AppButton extends StatelessWidget {
         return TextButton(
           onPressed: isEnabled ? onPressed : null,
           style: TextButton.styleFrom(
-            foregroundColor: AppColors.primary,
-            disabledForegroundColor: AppColors.textDisabled,
+            foregroundColor: colorScheme.primary,
+            disabledForegroundColor: colorScheme.onSurface.withValues(alpha: 0.38),
             padding: _getPadding(),
           ),
           child: _buildContent(context),
@@ -90,9 +91,9 @@ class AppButton extends StatelessWidget {
         return ElevatedButton(
           onPressed: isEnabled ? onPressed : null,
           style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.error,
-            foregroundColor: Colors.white,
-            disabledBackgroundColor: AppColors.textDisabled,
+            backgroundColor: colorScheme.error,
+            foregroundColor: colorScheme.onError,
+            disabledBackgroundColor: colorScheme.onSurface.withValues(alpha: 0.12),
             elevation: 0,
             shape: RoundedRectangleBorder(
               borderRadius: _getBorderRadius(),
@@ -106,6 +107,7 @@ class AppButton extends StatelessWidget {
 
   Widget _buildContent(BuildContext context) {
     if (isLoading) {
+      final colorScheme = Theme.of(context).colorScheme;
       return SizedBox(
         width: _getLoadingSize(),
         height: _getLoadingSize(),
@@ -113,8 +115,8 @@ class AppButton extends StatelessWidget {
           strokeWidth: 2,
           valueColor: AlwaysStoppedAnimation<Color>(
             type == AppButtonType.text || type == AppButtonType.secondary
-                ? AppColors.primary
-                : AppColors.onPrimary,
+                ? colorScheme.primary
+                : colorScheme.onPrimary,
           ),
         ),
       );

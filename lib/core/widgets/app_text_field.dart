@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_radius.dart';
-import '../theme/app_text_style.dart';
 
 /// 공통 입력 필드 위젯 (디자인 시스템 토큰 사용)
 /// 검증, 에러 표시, 다양한 타입 지원
@@ -68,6 +66,9 @@ class _AppTextFieldState extends State<AppTextField> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -85,52 +86,56 @@ class _AppTextFieldState extends State<AppTextField> {
           onChanged: widget.onChanged,
           onSubmitted: widget.onSubmitted,
           autofocus: widget.autofocus,
-          style: AppTextStyle.bodyMedium,
+          style: textTheme.bodyMedium,
           decoration: InputDecoration(
             labelText: widget.label,
-            labelStyle: AppTextStyle.bodyMedium.copyWith(
-              color: AppColors.textSecondary,
+            labelStyle: textTheme.bodyMedium?.copyWith(
+              color: colorScheme.onSurfaceVariant,
             ),
             hintText: widget.hint,
-            hintStyle: AppTextStyle.bodyMedium.copyWith(
-              color: AppColors.textTertiary,
+            hintStyle: textTheme.bodyMedium?.copyWith(
+              color: colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
             ),
             helperText: widget.helperText,
-            helperStyle: AppTextStyle.bodySmall.copyWith(
-              color: AppColors.textSecondary,
+            helperStyle: textTheme.bodySmall?.copyWith(
+              color: colorScheme.onSurfaceVariant,
             ),
             errorText: widget.errorText,
-            errorStyle: AppTextStyle.error,
+            errorStyle: textTheme.bodySmall?.copyWith(
+              color: colorScheme.error,
+            ),
             prefixIcon: widget.prefixIcon != null
-                ? Icon(widget.prefixIcon, color: AppColors.textSecondary)
+                ? Icon(widget.prefixIcon, color: colorScheme.onSurfaceVariant)
                 : null,
             suffixIcon: _buildSuffixIcon(),
             filled: true,
-            fillColor: widget.enabled ? AppColors.surface : AppColors.background,
+            fillColor: widget.enabled
+                ? colorScheme.surfaceContainerHighest
+                : colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
             contentPadding: AppSpacing.inputPadding,
             border: OutlineInputBorder(
               borderRadius: AppRadius.input,
-              borderSide: BorderSide(color: AppColors.border),
+              borderSide: BorderSide(color: colorScheme.outline),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: AppRadius.input,
-              borderSide: BorderSide(color: AppColors.border),
+              borderSide: BorderSide(color: colorScheme.outline),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: AppRadius.input,
-              borderSide: BorderSide(color: AppColors.primary, width: 2),
+              borderSide: BorderSide(color: colorScheme.primary, width: 2),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: AppRadius.input,
-              borderSide: BorderSide(color: AppColors.error),
+              borderSide: BorderSide(color: colorScheme.error),
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: AppRadius.input,
-              borderSide: BorderSide(color: AppColors.error, width: 2),
+              borderSide: BorderSide(color: colorScheme.error, width: 2),
             ),
             disabledBorder: OutlineInputBorder(
               borderRadius: AppRadius.input,
-              borderSide: BorderSide(color: AppColors.divider),
+              borderSide: BorderSide(color: colorScheme.outline.withValues(alpha: 0.38)),
             ),
           ),
         ),
@@ -145,10 +150,11 @@ class _AppTextFieldState extends State<AppTextField> {
 
     // 비밀번호 필드일 경우 보기/숨기기 아이콘
     if (widget.obscureText) {
+      final colorScheme = Theme.of(context).colorScheme;
       return IconButton(
         icon: Icon(
           _isObscured ? Icons.visibility_off : Icons.visibility,
-          color: AppColors.textSecondary,
+          color: colorScheme.onSurfaceVariant,
         ),
         onPressed: () {
           setState(() {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_radius.dart';
 import '../theme/app_shadow.dart';
@@ -28,13 +27,15 @@ class AppCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     final card = Container(
       margin: margin,
       decoration: BoxDecoration(
-        color: color ?? AppColors.card,
+        color: color ?? colorScheme.surface,
         borderRadius: AppRadius.card,
         border: Border.all(
-          color: borderColor ?? AppColors.border,
+          color: borderColor ?? colorScheme.outline,
           width: 1,
         ),
         boxShadow: _getShadow(),

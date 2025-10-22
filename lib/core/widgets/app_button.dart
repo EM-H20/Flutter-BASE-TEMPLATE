@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_radius.dart';
-import '../theme/app_text_style.dart';
 
 /// 공통 버튼 위젯 (디자인 시스템 토큰 사용)
 /// 로딩 상태, 비활성화, 아이콘 지원
@@ -126,6 +125,15 @@ class AppButton extends StatelessWidget {
       );
     }
 
+    // 버튼의 기본 텍스트 스타일 정의 (foregroundColor를 상속받도록 color 제외)
+    final textStyle = TextStyle(
+      fontFamily: 'Pretendard',
+      fontSize: _getFontSize(),
+      fontWeight: FontWeight.w500,
+      height: 1.4,
+      letterSpacing: _getLetterSpacing(),
+    );
+
     if (icon != null) {
       return Row(
         mainAxisSize: MainAxisSize.min,
@@ -133,12 +141,12 @@ class AppButton extends StatelessWidget {
         children: [
           Icon(icon, size: _getIconSize()),
           AppSpacing.horizontalSM(),
-          Text(text, style: _getTextStyle(context)),
+          Text(text, style: textStyle),
         ],
       );
     }
 
-    return Text(text, style: _getTextStyle(context));
+    return Text(text, style: textStyle);
   }
 
   /// 버튼 높이
@@ -170,16 +178,26 @@ class AppButton extends StatelessWidget {
     }
   }
 
-  /// 텍스트 스타일 (디자인 토큰 사용)
-  /// 색상은 버튼의 foregroundColor를 따르도록 color를 제거
-  TextStyle _getTextStyle(BuildContext context) {
+  /// 폰트 크기 (사이즈별)
+  double _getFontSize() {
     switch (size) {
       case AppButtonSize.small:
-        return AppTextStyle.labelSmall.copyWith(color: null);
+        return 11;
       case AppButtonSize.medium:
-        return AppTextStyle.labelMedium.copyWith(color: null);
+        return 12;
       case AppButtonSize.large:
-        return AppTextStyle.labelLarge.copyWith(color: null);
+        return 14;
+    }
+  }
+
+  /// Letter Spacing (사이즈별)
+  double _getLetterSpacing() {
+    switch (size) {
+      case AppButtonSize.small:
+      case AppButtonSize.medium:
+        return 0.5;
+      case AppButtonSize.large:
+        return 0.1;
     }
   }
 

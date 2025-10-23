@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'core/theme/app_theme.dart';
 import 'core/theme/theme_notifier.dart';
 import 'core/router/app_router.dart';
@@ -22,17 +23,25 @@ class MyApp extends ConsumerWidget {
       themeNotifier.syncWithSystem(context);
     }
 
-    return MaterialApp.router(
-      title: 'Base Template',
-      debugShowCheckedModeBanner: false,
+    return ScreenUtilInit(
+      // 디자인 기준 사이즈 (일반적으로 iPhone 14 Pro 기준)
+      designSize: const Size(390, 844),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) {
+        return MaterialApp.router(
+          title: 'Base Template',
+          debugShowCheckedModeBanner: false,
 
-      // 디자인 시스템 테마 적용
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: themeMode,
+          // 디자인 시스템 테마 적용
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: themeMode,
 
-      // go_router 통합
-      routerConfig: router,
+          // go_router 통합
+          routerConfig: router,
+        );
+      },
     );
   }
 }

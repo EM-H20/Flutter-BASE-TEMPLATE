@@ -1,5 +1,14 @@
 # Flutter Base Template
 
+### ⚡ Quick Start
+```bash
+# 1. Download and extract ZIP → Copy lib/ and pubspec.yaml to your project
+# 2. Install dependencies and run code generation
+flutter pub get && flutter pub run build_runner build --delete-conflicting-outputs
+# 3. Run the app
+flutter run
+```
+
 [한국어](#한국어) | [English](#english)
 
 ---

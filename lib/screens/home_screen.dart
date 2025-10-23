@@ -121,8 +121,8 @@ class HomeScreen extends ConsumerWidget {
 
   Widget _buildColorsShowcase(BuildContext context) {
     return Wrap(
-      spacing: 8,
-      runSpacing: 8,
+      spacing: AppSpacing.sm,
+      runSpacing: AppSpacing.sm,
       children: [
         _colorChip('Primary', Theme.of(context).colorScheme.primary),
         _colorChip('Secondary', Theme.of(context).colorScheme.secondary),

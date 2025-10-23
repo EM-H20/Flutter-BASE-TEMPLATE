@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_radius.dart';
 import '../theme/app_shadow.dart';
+import '../theme/app_border.dart';
 
 /// 공통 카드 위젯 (디자인 시스템 토큰 사용)
 /// 재사용 가능한 카드 컴포넌트
@@ -36,7 +37,7 @@ class AppCard extends StatelessWidget {
         borderRadius: AppRadius.card,
         border: Border.all(
           color: borderColor ?? colorScheme.outline,
-          width: 1,
+          width: AppBorder.card,
         ),
         boxShadow: _getShadow(),
       ),

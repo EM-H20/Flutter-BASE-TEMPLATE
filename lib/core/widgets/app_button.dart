@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_radius.dart';
+import '../theme/app_border.dart';
 
 /// 공통 버튼 위젯 (디자인 시스템 토큰 사용)
 /// 로딩 상태, 비활성화, 아이콘 지원
@@ -68,7 +69,7 @@ class AppButton extends StatelessWidget {
             ),
             side: BorderSide(
               color: isEnabled ? colorScheme.primary : colorScheme.outline,
-              width: 1,
+              width: AppBorder.button,
             ),
             shape: RoundedRectangleBorder(borderRadius: _getBorderRadius()),
             padding: _getPadding(),
@@ -115,7 +116,7 @@ class AppButton extends StatelessWidget {
         width: _getLoadingSize(),
         height: _getLoadingSize(),
         child: CircularProgressIndicator(
-          strokeWidth: 2,
+          strokeWidth: AppBorder.progressIndicator,
           valueColor: AlwaysStoppedAnimation<Color>(
             type == AppButtonType.text || type == AppButtonType.secondary
                 ? colorScheme.primary

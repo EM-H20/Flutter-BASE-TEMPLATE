@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_text_style.dart';
@@ -32,7 +33,7 @@ class AppErrorWidget extends StatelessWidget {
           children: [
             Icon(
               icon,
-              size: 64,
+              size: 64.w,
               color: AppColors.error,
             ),
             AppSpacing.verticalLG(),

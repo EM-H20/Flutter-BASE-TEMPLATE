@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_radius.dart';
@@ -75,22 +76,22 @@ class AppLoading extends StatelessWidget {
   double _getSize() {
     switch (size) {
       case AppLoadingSize.small:
-        return 24;
+        return 24.w;
       case AppLoadingSize.medium:
-        return 40;
+        return 40.w;
       case AppLoadingSize.large:
-        return 56;
+        return 56.w;
     }
   }
 
   double _getStrokeWidth() {
     switch (size) {
       case AppLoadingSize.small:
-        return 2;
+        return 2.w;
       case AppLoadingSize.medium:
-        return 3;
+        return 3.w;
       case AppLoadingSize.large:
-        return 4;
+        return 4.w;
     }
   }
 }
@@ -109,12 +110,12 @@ enum AppLoadingSize {
   large,
 }
 
-/// Shimmer 리스트 아이템 (재사용 가능)
+/// Shimmer 리스트 아이템 (재사용 가능, 반응형)
 class AppShimmerListItem extends StatelessWidget {
-  const AppShimmerListItem({
+  AppShimmerListItem({
     super.key,
-    this.height = 80,
-  });
+    double? height,
+  }) : height = height ?? 80.w;
 
   final double height;
 
@@ -124,7 +125,7 @@ class AppShimmerListItem extends StatelessWidget {
       baseColor: AppColors.divider,
       highlightColor: AppColors.surface,
       child: Container(
-        height: height,
+        height: height.h,
         margin: EdgeInsets.only(bottom: AppSpacing.sm),
         decoration: BoxDecoration(
           color: AppColors.surface,
@@ -135,13 +136,13 @@ class AppShimmerListItem extends StatelessWidget {
   }
 }
 
-/// Shimmer 카드 (재사용 가능)
+/// Shimmer 카드 (재사용 가능, 반응형)
 class AppShimmerCard extends StatelessWidget {
-  const AppShimmerCard({
+  AppShimmerCard({
     super.key,
     this.width,
-    this.height = 200,
-  });
+    double? height,
+  }) : height = height ?? 200.w;
 
   final double? width;
   final double height;
@@ -152,8 +153,8 @@ class AppShimmerCard extends StatelessWidget {
       baseColor: AppColors.divider,
       highlightColor: AppColors.surface,
       child: Container(
-        width: width,
-        height: height,
+        width: width?.w,
+        height: height.h,
         decoration: BoxDecoration(
           color: AppColors.surface,
           borderRadius: AppRadius.card,

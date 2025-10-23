@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../core/widgets/app_card.dart';
 import '../core/theme/app_spacing.dart';
+import '../core/theme/app_radius.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -8,15 +9,13 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Profile'),
-      ),
+      appBar: AppBar(title: const Text('Profile')),
       body: ListView(
         padding: AppSpacing.all(AppSpacing.screenPadding),
         children: [
-          const CircleAvatar(
-            radius: 50,
-            child: Icon(Icons.person, size: 50),
+          CircleAvatar(
+            radius: AppRadius.xl * 2,
+            child: Icon(Icons.person, size: AppRadius.xl * 2),
           ),
           AppSpacing.verticalMD(),
           Text(
@@ -76,5 +75,4 @@ class ProfileScreen extends StatelessWidget {
       ),
     );
   }
-
 }

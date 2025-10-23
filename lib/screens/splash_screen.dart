@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../core/router/route_names.dart';
+import '../core/theme/app_spacing.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -26,22 +28,19 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            FlutterLogo(size: 100),
-            SizedBox(height: 24),
+            FlutterLogo(size: 100.w),
+            AppSpacing.verticalLG(),
             Text(
               'Base Template',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
-            SizedBox(height: 16),
-            CircularProgressIndicator(),
+            AppSpacing.verticalMD(),
+            const CircularProgressIndicator(),
           ],
         ),
       ),

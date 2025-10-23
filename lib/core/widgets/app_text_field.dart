@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_radius.dart';
+import '../theme/app_border.dart';
 
 /// 공통 입력 필드 위젯 (디자인 시스템 토큰 사용)
 /// 검증, 에러 표시, 다양한 타입 지원
@@ -115,27 +116,27 @@ class _AppTextFieldState extends State<AppTextField> {
             contentPadding: AppSpacing.inputPadding,
             border: OutlineInputBorder(
               borderRadius: AppRadius.input,
-              borderSide: BorderSide(color: colorScheme.outline),
+              borderSide: BorderSide(color: colorScheme.outline, width: AppBorder.input),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: AppRadius.input,
-              borderSide: BorderSide(color: colorScheme.outline),
+              borderSide: BorderSide(color: colorScheme.outline, width: AppBorder.input),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: AppRadius.input,
-              borderSide: BorderSide(color: colorScheme.primary, width: 2),
+              borderSide: BorderSide(color: colorScheme.primary, width: AppBorder.inputFocused),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: AppRadius.input,
-              borderSide: BorderSide(color: colorScheme.error),
+              borderSide: BorderSide(color: colorScheme.error, width: AppBorder.input),
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: AppRadius.input,
-              borderSide: BorderSide(color: colorScheme.error, width: 2),
+              borderSide: BorderSide(color: colorScheme.error, width: AppBorder.inputFocused),
             ),
             disabledBorder: OutlineInputBorder(
               borderRadius: AppRadius.input,
-              borderSide: BorderSide(color: colorScheme.outline.withValues(alpha: 0.38)),
+              borderSide: BorderSide(color: colorScheme.outline.withValues(alpha: 0.38), width: AppBorder.input),
             ),
           ),
         ),

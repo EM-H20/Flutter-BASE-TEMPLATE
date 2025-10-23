@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_text_style.dart';
@@ -32,7 +33,7 @@ class AppEmptyState extends StatelessWidget {
           children: [
             Icon(
               icon,
-              size: 80,
+              size: 80.w,
               color: AppColors.textTertiary,
             ),
             AppSpacing.verticalLG(),

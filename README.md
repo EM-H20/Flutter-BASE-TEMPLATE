@@ -1,6 +1,8 @@
 # Flutter Base Template
 
 ### ⚡ Quick Start
+<img width="477" height="366" alt="스크린샷 2025-10-23 오전 11 52 23" src="https://github.com/user-attachments/assets/c7a2e790-347d-473a-9a81-efd3c33d30d5" />
+
 ```bash
 # 1. Download and extract ZIP → Copy lib/ and pubspec.yaml to your project
 # 2. Install dependencies and run code generation
